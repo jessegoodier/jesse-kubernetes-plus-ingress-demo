@@ -1,0 +1,74 @@
+# NGINX Plus Ingress Demo
+
+Single node kubernetes cluster with nginx ingress on hostnetwork with automatic /etc/hosts managment for easy demos.
+
+Demo includes:
+
+* NGINX App Protect for Kubernetes Ingress
+
+* Prometheus / Grafana preconfigured with [NGINX's provided sample](https://github.com/nginxinc/kubernetes-ingress/tree/master/grafana)
+
+* NGINX built-in monitoring dashboard
+
+Adapted from <https://www.redpill-linpro.com/techblog/2019/04/04/kubernetes-setup.html>
+
+## General Requirements
+
+1. This was built on a base ubuntu 18.04 build. YMMV with other distros.
+
+1. You must build your NGINX Plus ingress container, this demo includes NGINX App Protect, follow these instructions: <https://docs.nginx.com/nginx-ingress-controller/app-protect/installation/>
+
+1. That process will push your container image to your private registry. You need to edit [7.plus-ingress-install.sh](7.plus-ingress-install.sh) with one of the auth methods to authenticate to your registry.
+
+1. If not using vagrant, just run `sh 1.run-all-scripts.sh` do not run as sudo.
+
+1. If not using vagrant, you'll need to modify your hosts file and add these hosts to it, pointing to your VM: cafe.example.com k8s.nginx.rocks k8s-dashboard.nginx.rocks k8s-vs.nginx.rocks kic-waf.nginx.rocks
+
+1. If not using vagrant, you can skip everything below this line.
+
+## Steps if using vagrant (you need to run all steps except 4. and 5.)
+
+7. Vagrant (brew install vagrant)
+
+1. The default provider in this example is Virtualbox. Modify the Vagrantfile to your needs.
+
+1. <https://github.com/aidanns/vagrant-reload> ```vagrant plugin install vagrant-reload```
+
+1. <https://github.com/devopsgroup-io/vagrant-hostmanager> ```vagrant plugin install vagrant-hostmanager```
+
+1. `vagrant up` takes about 10 minutes.
+
+1. Once up, `vagrant ssh` and run `k get pods -A` to make sure everything is running (not creating). Note that kubectl is aliased to k and bash autocomplete is enabled.
+
+1. A [bookmark file](bookmarks.html) can be imported into chrome with the links to each resource.
+
+## Troubleshooting
+
+If you run into issues, here are a few commands that you may find useful:
+
+```
+docker ps -a # look for exiting containers
+docker exec -it --user=0 --privileged k8s_plus-nap-kic-nginx-ingress-***** nginx -T>nginx.conf #output current nginx config
+# or bash into and modify config directly:
+docker exec -it --user=0 --privileged k8s_plus-nap-kic-nginx-ingress-***** apt update
+docker exec -it --user=0 --privileged k8s_plus-nap-kic-nginx-ingress-***** apt -y install curl vim
+docker exec -it --user=0 --privileged k8s_plus-nap-kic-nginx-ingress-***** bash
+kubectl port-forward -n nginx-mesh --address=0.0.0.0 svc/grafana 3000:3000&
+
+```
+
+NGINX Plus Dashboard for all NGINX Service Mesh sidecar proxies.
+
+To access the dashboard for any Pod with an enabled proxy, use kubectl to port-forward to port 8886.
+
+kubectl port-forward -n <namespace> <pod name> 8886
+Then, you can view the dashboard at http://localhost:8886/dashboard.html
+
+
+Pics:
+
+NGINX Plus Dashboard for KIC
+![NGINX-Dashboard](NGINX-Plus-KIC-Dashboard.png)
+
+Grafana Dashboard
+![Grafana Dashboard](grafana-dashboard.png)
