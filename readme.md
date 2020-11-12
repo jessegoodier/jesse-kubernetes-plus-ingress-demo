@@ -2,6 +2,10 @@
 
 Single node kubernetes cluster with nginx ingress on hostnetwork with automatic /etc/hosts managment for easy demos.
 
+The scripts overwrite all settings without warning. Use on a new VM only.
+
+Recomend 2 vCPU / 3 gb mem
+
 Demo includes:
 
 * NGINX App Protect for Kubernetes Ingress
