@@ -1,5 +1,5 @@
 #!/bin/bash -xe
-#kubectl apply -f k8s-apps/
+kubectl apply -f k8s-apps/
 kubectl apply -f k8s-apps/k8s-dashboard
 kubectl apply -f k8s-apps/cafe-complete-example
 kubectl create serviceaccount dashboard-admin-sa
