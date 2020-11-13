@@ -36,13 +36,11 @@ Adapted from <https://www.redpill-linpro.com/techblog/2019/04/04/kubernetes-setu
 
 1. The default provider in this example is Virtualbox. Modify the Vagrantfile to your needs.
 
-1. <https://github.com/aidanns/vagrant-reload> ```vagrant plugin install vagrant-reload```
-
 1. <https://github.com/devopsgroup-io/vagrant-hostmanager> ```vagrant plugin install vagrant-hostmanager```
 
-1. `vagrant up` takes about 10 minutes.
+1. `vagrant up` takes about 5 minutes.
 
-1. Once up, `vagrant ssh` and run `k get pods -A` to make sure everything is running (not creating). Note that kubectl is aliased to k and bash autocomplete is enabled.
+1. Once up, `vagrant ssh` and run `k get pods -A` to make sure everything is running (not creating). Note that kubectl is aliased to k and bash/zsh autocomplete is enabled.
 
 1. A [bookmark file](bookmarks.html) can be imported into chrome with the links to each resource.
 
@@ -58,16 +56,7 @@ docker exec -it --user=0 --privileged k8s_plus-nap-kic-nginx-ingress-***** apt u
 docker exec -it --user=0 --privileged k8s_plus-nap-kic-nginx-ingress-***** apt -y install curl vim
 docker exec -it --user=0 --privileged k8s_plus-nap-kic-nginx-ingress-***** bash
 kubectl port-forward -n nginx-mesh --address=0.0.0.0 svc/grafana 3000:3000&
-
 ```
-
-NGINX Plus Dashboard for all NGINX Service Mesh sidecar proxies.
-
-To access the dashboard for any Pod with an enabled proxy, use kubectl to port-forward to port 8886.
-
-kubectl port-forward -n <namespace> <pod name> 8886
-Then, you can view the dashboard at http://localhost:8886/dashboard.html
-
 
 Pics:
 
